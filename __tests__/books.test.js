@@ -11,7 +11,7 @@ describe('books routes', () => {
     return setup(pool);
   });
 
-  it('should return a list of books', async () => {
+  it.skip('should return a list of books', async () => {
     const res = await request(app).get('/books');
     const exp = bookData.map((book) => {
       return { id: book.id, title: book.title, released: book.released };
@@ -19,7 +19,7 @@ describe('books routes', () => {
     expect(res.body).toEqual(exp);
   });
 
-  it('/books/1 should return book detail with author', async () => {
+  it.skip('/books/1 should return book detail with author', async () => {
     const res = await request(app).get('/books/1');
     const exp = await Book.getSingleBook('1');
     expect(res.body).toEqual(exp);
