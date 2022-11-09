@@ -4,6 +4,7 @@ const request = require('supertest');
 const app = require('../lib/app');
 
 const { bookData } = require('../lib/book-data.js');
+const { Book } = require('../lib/models/Book.js');
 
 describe('books routes', () => {
   beforeEach(() => {
@@ -18,7 +19,13 @@ describe('books routes', () => {
     expect(res.body).toEqual(exp);
   });
 
-  afterAll(() => {
-    pool.end();
+  it('/books/1 should return book detail with author', async () => {
+    const res = await request(app).get('/books/1');
+    const exp = await Book.getSingleBook('1');
+    expect(res.body).toEqual(exp);
   });
+});
+
+afterAll(() => {
+  pool.end();
 });
