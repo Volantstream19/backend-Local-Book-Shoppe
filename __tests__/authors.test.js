@@ -4,11 +4,13 @@ const request = require('supertest');
 const app = require('../lib/app');
 
 const { authors } = require('../lib/author-data');
+const { Author } = require('../lib/models/Author.js');
 
 describe('author routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
+
   it('/authors should return a list of authors', async () => {
     const res = await request(app).get('/authors');
     const expected = authors.map((author) => {
@@ -16,7 +18,14 @@ describe('author routes', () => {
     });
     expect(res.body).toEqual(expected);
   });
-  afterAll(() => {
-    pool.end();
+
+  it('/authors/:id route returns author detail with books', async () => {
+    const res = await request(app).get('/authors/1');
+    const exp = await Author.getSingleAuthor('1');
+    expect(res.body).toEqual(exp);
   });
+});
+
+afterAll(() => {
+  pool.end();
 });
